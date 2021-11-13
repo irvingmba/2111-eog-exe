@@ -23,6 +23,10 @@ function getAmPmHour(timestamp: number) {
   return `${formatHour}:${formatMinutes} ${pm ? 'pm' : 'am'}`;
 }
 
+function timeFormatter(time:number) {
+  return new Date(time).toLocaleString();
+}
+
 export default function Chart(props: {
   data: IfChartData[];
   lines: IfLines;
@@ -34,7 +38,29 @@ export default function Chart(props: {
     colors,
   } = props;
 
-  return (
+  const chartLines = React.useMemo(() => Object.keys(lines).map((unit) => {
+    const lineNames = lines[unit];
+    return lineNames.map((lineName) => (
+      <Line
+        key={lineName}
+        yAxisId={unit}
+        dataKey={lineName}
+        type="monotone"
+        stroke={colors[lineName]}
+        dot={false}
+        connectNulls
+        isAnimationActive={false}
+      />
+    ));
+  }), [lines]);
+
+  const yAxis = React.useMemo(() => Object.keys(lines).map((unit) => (
+    <YAxis key={unit} yAxisId={unit}>
+      <Label value={unit} position="top" offset={15} />
+    </YAxis>
+  )), [lines]);
+
+  return ((
     <ResponsiveContainer width="99%" height="100%">
       <LineChart
         width={300}
@@ -42,33 +68,18 @@ export default function Chart(props: {
         data={data}
         margin={{ top: 30, right: 10 }}
       >
-        {Object.keys(lines).map((unit) => (
-          <YAxis key={unit} yAxisId={unit}>
-            <Label value={unit} position="top" offset={15} />
-          </YAxis>
-        ))}
-        {Object.keys(lines).map((unit) => {
-          const lineNames = lines[unit];
-          return lineNames.map((lineName) => (
-            <Line
-              key={lineName}
-              yAxisId={unit}
-              dataKey={lineName}
-              type="monotone"
-              stroke={colors[lineName]}
-              dot={false}
-            />
-          ));
-        })}
+        {yAxis}
+        {chartLines}
         <XAxis
           dataKey="date"
           tickFormatter={getAmPmHour}
           interval={300}
           minTickGap={55}
         />
-        <Tooltip labelFormatter={(time) => new Date(time).toLocaleString()} />
+        <Tooltip labelFormatter={timeFormatter} />
         <Legend />
       </LineChart>
     </ResponsiveContainer>
+  )
   );
 }

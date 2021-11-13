@@ -29,33 +29,48 @@ function genMetricDisplays(values: string[], realTime: { [x: string]: measuremen
 export default function Dashboard() {
   const dispatch = useDispatch();
   const names = useAppSelector((state) => state.measurements.available);
-  const chooseChart = (chosen: string[] | []) => {
+  const chooseChart = React.useCallback((chosen: string[] | []) => {
     dispatch(measurements.mutChosen(chosen));
-  };
+  }, []);
 
   const {
     realTime,
-    chosen, metrics,
-    chartData, available,
+    chosen,
+    metrics,
+    chartData,
+    available,
   } = useAppSelector((state) => state.measurements);
 
-  const availableColors = React.useCallback(
-    () => available.reduce((acc: { [x:string]:string }, metric, i) => {
+  const availableColors = React.useMemo(
+    () => available.reduce((acc: { [x: string]: string }, metric, i) => {
       const colors = ['#0b84a5', '#f6c85f', '#6f4e7c', '#9dd866', '#ca472f', '#ffa056'];
       return { ...acc, [metric]: colors[i] };
-    }, {}), [available],
+    }, {}),
+    [available],
   );
 
-  const lines = chosen.reduce((acc: IfLines, picked) => {
-    const historyData = metrics.find((_measure) => _measure.metric === picked);
-    if (historyData) {
-      const data = historyData.measurements;
-      const { unit } = data[data.length - 1];
-      if (!acc[unit]) acc[unit] = [];
-      acc[unit].push(picked);
-    }
-    return acc;
-  }, {});
+  const lines = React.useMemo(
+    () => chosen.reduce((acc: IfLines, picked) => {
+      const historyData = metrics.find((_measure) => _measure.metric === picked);
+      if (historyData) {
+        const data = historyData.measurements;
+        const { unit } = data[data.length - 1];
+        if (!acc[unit]) acc[unit] = [];
+        acc[unit].push(picked);
+      }
+      return acc;
+    }, {}),
+    [chosen],
+  );
+
+  const showDisplays = React.useMemo(() => (chosen.length
+    ? genMetricDisplays(chosen, realTime) : null), [chosen, realTime]);
+
+  const showChart = React.useMemo(
+    () => (chosen.length
+      ? <Chart data={chartData} lines={lines} colors={availableColors} />
+      : null), [chosen, chartData.length],
+  );
 
   React.useEffect(() => {
     dispatch(sagas.getOptionsAct());
@@ -66,16 +81,8 @@ export default function Dashboard() {
   return (
     <>
       <ChartSelector names={names} setCharts={chooseChart} charts={chosen} />
-      {chosen.length ? genMetricDisplays(chosen, realTime) : null}
-      {chosen.length
-        ? (
-          <Chart
-            data={chartData}
-            lines={lines}
-            colors={availableColors()}
-          />
-        )
-        : null}
+      {showDisplays}
+      {showChart}
     </>
   );
 }

@@ -18,19 +18,20 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 interface Measurement {
   metric: string;
   value: number;
+  unit: string;
 }
 
 export function MetricDisplay(props: { measure?: Measurement }) {
-  const { measure = { metric: '', value: '' } } = props;
-  const { metric, value } = measure;
+  const { measure = { metric: '', value: '', unit: '' } } = props;
+  const { metric, value, unit } = measure;
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <Paper elevation={3}>
         <Typography variant="h6">{metric}</Typography>
-        <Typography align="center" variant="h4">
-          {value}
+        <Typography align="center" variant="h5">
+          {`${value} ${unit}`}
         </Typography>
       </Paper>
     </div>

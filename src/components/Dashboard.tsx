@@ -13,8 +13,12 @@ function genMetricDisplays(values: string[], realTime: { [x: string]: IfMetric }
       container
     >
       {values.map((picked) => {
-        const { metric, value } = realTime[picked];
-        return (<Grid key={metric} item xs><MetricDisplay measure={{ metric, value }} /></Grid>);
+        const { metric, value, unit } = realTime[picked];
+        return (
+          <Grid key={metric} item xs>
+            <MetricDisplay measure={{ metric, value, unit }} />
+          </Grid>
+        );
       })}
     </Grid>
   );

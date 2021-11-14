@@ -21,8 +21,8 @@ interface Measurement {
   unit: string;
 }
 
-export function MetricDisplay(props: { measure?: Measurement }) {
-  const { measure = { metric: '', value: '', unit: '' } } = props;
+export function MetricDisplay(props: { measure: Measurement }) {
+  const { measure } = props;
   const { metric, value, unit } = measure;
   const classes = useStyles();
 

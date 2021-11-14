@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  LineChart, Line, Tooltip, XAxis, YAxis, Legend, ResponsiveContainer, Label,
+  LineChart, Line, Tooltip, XAxis, YAxis, Legend, Label, ResponsiveContainer,
 } from 'recharts';
 
 export interface IfChartData {
@@ -27,7 +27,7 @@ function timeFormatter(time:number) {
   return new Date(time).toLocaleString();
 }
 
-export default function Chart(props: {
+export function Chart(props: {
   data: IfChartData[];
   lines: IfLines;
   colors: { [x:string]: string }
@@ -61,7 +61,7 @@ export default function Chart(props: {
   )), [lines]);
 
   return ((
-    <ResponsiveContainer width="99%" height="100%">
+    <ResponsiveContainer width="99%" height={500}>
       <LineChart
         width={300}
         height={400}

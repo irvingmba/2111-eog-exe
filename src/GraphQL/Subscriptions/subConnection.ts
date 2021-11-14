@@ -13,7 +13,7 @@ const wsLink = new WebSocketLink({
   },
 });
 
-export default split(
+export const splitLink = split(
   ({ query }) => {
     const definition = getMainDefinition(query);
     return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';

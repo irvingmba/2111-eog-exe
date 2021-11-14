@@ -9,7 +9,7 @@ export interface IfNewMeasurement {
   }
 }
 
-export default gql`
+export const newMeasurementQry = gql`
   subscription newMeasurement {
     newMeasurement {
       metric

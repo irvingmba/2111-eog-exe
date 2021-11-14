@@ -17,12 +17,7 @@ export interface IfGetMeasurements {
   }[]
 }
 
-// {
-//     $metricName: String!,
-//     $after: Timestamp,
-//     $before: Timestamp}
-
-export default gql`
+export const getMeasurementsQry = gql`
 query getMeasurements($input: MeasurementQuery) {
         getMeasurements(input: $input) {
             metric

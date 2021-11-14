@@ -20,7 +20,7 @@ interface Measurement {
   value: number;
 }
 
-export default function MetricDisplay(props: { measure?: Measurement }) {
+export function MetricDisplay(props: { measure?: Measurement }) {
   const { measure = { metric: '', value: '' } } = props;
   const { metric, value } = measure;
   const classes = useStyles();

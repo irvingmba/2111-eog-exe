@@ -1,2 +1,2 @@
-export * as newMeasurement from './newMeasurement';
-export { default as splitLink } from './subConnection';
+export * from './newMeasurement';
+export * from './subConnection';

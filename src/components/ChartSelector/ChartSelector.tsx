@@ -9,16 +9,13 @@ import { Paper } from '@material-ui/core';
 import useStyles, { MenuProps } from './ChartSelector.styles';
 
 export default function ChartSelector(props: {
-  names: string[], setCharts:(state:string[] | [])=>void, charts: string[] }) {
-  const { names = [], setCharts, charts = [] } = props;
+  names: string[], setCharts:(state:string[] | [])=>void, chosen: string[] }) {
+  const { names = [], setCharts, chosen = [] } = props;
   const classes = useStyles();
   const theme = useTheme();
 
-  // const [charts, setCharts] = React.useState<string[]>([]);
-
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setCharts(event.target.value as string[]);
-    // if (change) change(charts);
   };
 
   function getStyles(name: string, _personName: string[], _theme: Theme) {
@@ -32,7 +29,7 @@ export default function ChartSelector(props: {
   return (
     <FormControl className={classes.formControl}>
       <Paper component="ul" className={classes.paperList}>
-        {charts.map((data) => {
+        {chosen.map((data) => {
           let icon;
 
           return (
@@ -41,7 +38,7 @@ export default function ChartSelector(props: {
                 icon={icon}
                 label={data}
                 onDelete={() => {
-                  setCharts(charts.filter((person) => person !== data));
+                  setCharts(chosen.filter((person) => person !== data));
                 }}
                 className={classes.chip}
               />
@@ -53,18 +50,19 @@ export default function ChartSelector(props: {
         labelId="demo-mutiple-chip-label"
         id="demo-mutiple-chip"
         multiple
-        value={charts}
+        value={chosen}
         onChange={handleChange}
         input={<Input id="select-multiple-chip" />}
         MenuProps={MenuProps}
         displayEmpty
         renderValue={() => <p>Select chart</p>}
       >
-        {names.map((name) => (
-          <MenuItem key={name} value={name} style={getStyles(name, charts, theme)}>
-            {name}
-          </MenuItem>
-        ))}
+        {names.filter(name => !chosen.includes(name))
+          .map((name) => (
+            <MenuItem key={name} value={name} style={getStyles(name, chosen, theme)}>
+              {name}
+            </MenuItem>
+          ))}
       </Select>
     </FormControl>
   );

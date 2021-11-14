@@ -4,7 +4,7 @@ export interface IfHeartbeat {
   heartBeat: number;
 }
 
-export default gql`
+export const heartBeatQry = gql`
   query heartBeat {
     heartBeat
   }

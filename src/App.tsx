@@ -10,7 +10,7 @@ import Wrapper from './components/Wrapper';
 // import NowWhat from './components/NowWhat';
 import { client } from './GraphQL';
 import { store } from './appState';
-import Dashboard from './components/Dashboard';
+import { Dashboard } from './components/Dashboard';
 
 const theme = createTheme({
   palette: {

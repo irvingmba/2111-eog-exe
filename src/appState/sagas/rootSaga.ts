@@ -1,7 +1,8 @@
 import { all, call, spawn } from 'redux-saga/effects';
-import watchGet30MinMetrics from './get30MinMetrics';
+import { watchGet30MinMetrics } from './get30MinMetrics';
 import { watchGetMetrics } from './getMetrics';
-import watchNewMeasurement from './newMeasurement';
+import { handleError } from './handleError';
+import { watchNewMeasurement } from './newMeasurement';
 
 export function* rootSaga() {
   const sagas = [watchGetMetrics, watchGet30MinMetrics, watchNewMeasurement];
@@ -13,7 +14,7 @@ export function* rootSaga() {
           yield call(saga);
           break;
         } catch (e) {
-          console.error(e);
+          yield call(handleError, e);
         }
       }
     })),

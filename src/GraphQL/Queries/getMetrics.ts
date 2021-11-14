@@ -4,6 +4,6 @@ export interface IfMetrics {
   getMetrics: string[];
 }
 
-export default gql`query getMetrics{
+export const metricsQuery = gql`query getMetrics{
     getMetrics
 }`;

@@ -12,7 +12,7 @@ export interface IfGetMultipleMeasurements {
   }[]
 }
 
-export default gql`
+export const getMultipleMeasurementsQry = gql`
 query getMultipleMeasurements($input: [MeasurementQuery]){
     getMultipleMeasurements(input: $input){
         metric

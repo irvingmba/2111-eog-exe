@@ -97,4 +97,4 @@ export const {
   update1DataChart,
 } = measurementsSlice.actions;
 
-export default measurementsSlice.reducer;
+export const { reducer: measurementsReducer } = measurementsSlice;
